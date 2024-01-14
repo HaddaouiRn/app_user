@@ -20,10 +20,13 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                // Étape pour déployer sur Kubernetes ( à ajustez en fonction du projet et du fichier kubeconfig.yaml)
                 script {
-                    withKubeConfig([credentialsId: 'your-kubeconfig-credentials-id', kubeconfigFile: 'kubeconfig.yaml']) {
-                        sh 'kubectl apply -f kubeconfig.yaml'
+                    // Utiliser l'agent SSH pour se connecter au serveur Kubernetes
+                    sshagent(credentials: ['kubernetes-ssh-credentials']) {
+                        // Déployer MariaDB
+                        sh 'kubectl apply -f mariadb-deployment.yml'
+                        // Déployer l'application Node.js
+                        sh 'kubectl apply -f nodejs-deployment.yml'
                     }
                 }
             }
@@ -33,7 +36,11 @@ pipeline {
     post {
         always {
             // Nettoyer après le déploiement, si nécessaire
-            sh 'kubectl delete pod -l app=app_user'
+            script {
+                sshagent(credentials: ['kubernetes-ssh-credentials']) {
+                    sh 'kubectl delete pod -l app=app_user'
+                }
+            }
         }
     }
 }
