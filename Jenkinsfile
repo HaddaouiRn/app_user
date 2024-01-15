@@ -18,15 +18,29 @@ pipeline {
             }
         }
 
+        stage('Transfer Deployment Files') {
+            steps {
+                script {
+                    // Utiliser l'agent SSH pour transférer les fichiers de déploiement
+                    sshagent(credentials: ['kubernetes-ssh-credentials']) {
+                        // Transférer le fichier mariadb-deployment.yml
+                        sh 'scp mariadb-deployment.yml rania@10.0.2.15:/home/rania'
+                        // Transférer le fichier nodejs-deployment.yml
+                        sh 'scp nodejs-deployment.yml rania@10.0.2.15:/home/rania'
+                    }
+                }
+            }
+        }
+
         stage('Deploy to Kubernetes') {
             steps {
                 script {
                     // Utiliser l'agent SSH pour se connecter au serveur Kubernetes
                     sshagent(credentials: ['kubernetes-ssh-credentials']) {
                         // Déployer MariaDB
-                        sh 'kubectl apply -f mariadb-deployment.yml'
+                        sh 'ssh rania@10.0.2.15 "kubectl apply -f /home/rania/mariadb-deployment.yml"'
                         // Déployer l'application Node.js
-                        sh 'kubectl apply -f nodejs-deployment.yml'
+                        sh 'ssh rania@10.0.2.15 "kubectl apply -f /home/rania/nodejs-deployment.yml"'
                     }
                 }
             }
@@ -38,7 +52,7 @@ pipeline {
             // Nettoyer après le déploiement, si nécessaire
             script {
                 sshagent(credentials: ['kubernetes-ssh-credentials']) {
-                    sh 'kubectl delete pod -l app=app_user'
+                    sh 'ssh rania@10.0.2.15 "kubectl delete pod -l app=app_user"'
                 }
             }
         }
