@@ -22,7 +22,7 @@ pipeline {
             steps {
                 script {
                 
-                    sh 'ssh -o StrictHostKeyChecking=accept-new rania@10.0.2.15 true'
+                    sh 'ssh -vvv -o StrictHostKeyChecking=accept-new rania@10.0.2.15 true'
                     // Utiliser l'agent SSH pour transférer les fichiers de déploiement
                     sshagent(credentials: ['kubernetes-ssh-credentials']) {
                         // Transférer le fichier mariadb-deployment.yml
