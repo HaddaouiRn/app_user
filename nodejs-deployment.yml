@@ -15,10 +15,10 @@ spec:
       containers:
       - name: nodejs-app
         image: haddaouirania/app_user_web_container
-        imagePullSecrets:
-        - name: jenkins-ssh-key
         ports:
         - containerPort: 3000
+      imagePullSecrets:
+      - name: jenkins-ssh-key
 
 ---
 
@@ -33,3 +33,4 @@ spec:
     targetPort: 3000
   selector:
     app: nodejs-app
+

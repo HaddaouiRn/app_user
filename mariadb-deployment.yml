@@ -7,7 +7,9 @@ spec:
   - port: 3306
   selector:
     app: mariadb
+
 ---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -31,9 +33,9 @@ spec:
           value: rania
         - name: MYSQL_DATABASE
           value: userdb
-        imagePullSecrets:
-        - name: jenkins-ssh-key
         ports:
         - containerPort: 3306
           name: mariadb
+      imagePullSecrets:
+      - name: jenkins-ssh-key
 
