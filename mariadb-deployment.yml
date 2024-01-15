@@ -31,6 +31,8 @@ spec:
           value: rania
         - name: MYSQL_DATABASE
           value: userdb
+        imagePullSecrets:
+        - name: jenkins-ssh-key
         ports:
         - containerPort: 3306
           name: mariadb
