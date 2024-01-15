@@ -37,7 +37,7 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    // Utiliser l'agent SSH pour se connecter au serveur Kubernetes
+                    // Utilisation de l'agent SSH pour se connecter au serveur Kubernetes
                     sshagent(credentials: ['kubernetes-ssh-credentials']) {
                         // Déployer MariaDB
                         sh 'ssh rania@10.0.2.15 "kubectl apply -f /home/rania/mariadb-deployment.yml"'
@@ -51,7 +51,7 @@ pipeline {
 
     post {
         always {
-            // Nettoyer après le déploiement, si nécessaire
+            // Nettoyage après le déploiement
             script {
                 sshagent(credentials: ['kubernetes-ssh-credentials']) {
                     sh 'ssh rania@10.0.2.15 "kubectl delete pod -l app=app_user"'
