@@ -9,6 +9,8 @@ services:
     depends_on:
       - mariadb
     command: ["/usr/wait-for-mariadb.sh", "mariadb", "node", "/usr/src/app/index.js"]
+    networks:
+      - app_network
       
   mariadb:
     image: mariadb:latest
@@ -18,7 +20,11 @@ services:
     volumes:
       - mariadb-data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app_networ
 
 volumes:
   mariadb-data:
-
+  
+networks:
+  app_network:
