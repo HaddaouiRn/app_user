@@ -17,9 +17,8 @@ pipeline {
                     sh 'docker compose up --build -d'
 
                     // Tagging des images pour le registre DockerHub
-                    sh 'docker tag nodejs haddaouirania/app_user_web_container:latest'
                     sh 'docker tag mariadb haddaouirania/mariadb_container:latest'
-                     
+                    sh 'docker tag nodejs haddaouirania/app_user_web_container:latest'
                 }
             }
         }
@@ -28,11 +27,13 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerHubCredentials') {
+                    
+                        def dbImage = docker.build("haddaouirania/mariadb_container:latest")
+                        dbImage.push()
+                    
                         def appImage = docker.build("haddaouirania/app_user_web_container:latest")
                         appImage.push()
         
-                        def dbImage = docker.build("haddaouirania/mariadb_container:latest")
-                        dbImage.push()
                     }
                 }
 
