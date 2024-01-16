@@ -26,7 +26,7 @@ spec:
         app: mariadb
     spec:
       containers:
-      - image: haddaouirania/mariadb_container
+      - image: haddaouirania/mariadb_container:latest
         name: mariadb
         env:
         - name: MYSQL_ROOT_PASSWORD
