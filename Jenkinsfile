@@ -13,11 +13,11 @@ pipeline {
             steps {
                 // Étape pour construire l'application
                 script {
-// Construire les images avec Docker Compose
+                    // Construire les images avec Docker Compose
                     sh 'docker compose up --build -d'
 
                     // Tagging des images pour le registre DockerHub
-                    sh 'docker tag app_user-web haddaouirania/app_user_web_container:latest'
+                    sh 'docker tag nodejs haddaouirania/app_user_web_container:latest'
                     sh 'docker tag mariadb haddaouirania/mariadb_container:latest'
                      
                 }
