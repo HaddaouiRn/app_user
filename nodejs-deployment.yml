@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: nodejs-app
-        image: haddaouirania/app_user_web_container:latest
+        image: haddaouirania/app_user_web_container
         ports:
         - containerPort: 3000
       imagePullSecrets:
