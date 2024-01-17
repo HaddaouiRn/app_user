@@ -17,8 +17,8 @@ pipeline {
                     sh 'docker build -t nodejs . '
 
                    // Optimiser l'image avec docker-slim
-                    sh 'docker-slim build --http-probe nodejs'                    
-
+                    sh 'docker-slim build --http-probe-off nodejs'
+                  
                     // Tagging de l'image pour le registre DockerHub
                     sh 'docker tag nodejs.slim haddaouirania/app_user_web_container:latest'
                 }
